@@ -18,7 +18,7 @@
         }
 
         .nav-shadow {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
         }
     </style>
 </head>
@@ -28,7 +28,7 @@
     <header class="sticky top-0 z-50 px-8">
         <nav class="nav-shadow mx-auto mt-4 rounded-2xl border border-slate-200 bg-white">
             <div class="flex items-center justify-between px-4 py-3 md:px-6">
-                <div class="flex items-center gap-3">
+                <div class="flex flex-col md:flex-row items-center gap-3">
                     <img src="assets/logo.png" alt="Bangladesh Govt Logo" class="h-9 w-9 rounded-full" />
                     <div class="leading-tight">
                         <p class="font-extrabold tracking-tight text-[#006747]">
@@ -505,7 +505,6 @@
         function handleHeartClick() {
             state.hearts += 1;
             renderCounts();
-            alert('Thank you for your support! ❤️');
         }
 
         async function handleCopy(number, serviceName) {
@@ -643,7 +642,6 @@
                 renderHistory();
             }
         });
-
 
         // DOM
         document.addEventListener('DOMContentLoaded', function () {
