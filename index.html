@@ -27,10 +27,11 @@
     <!-- Nav section -->
     <header class="sticky top-0 z-50 px-8">
         <nav class="nav-shadow mx-auto mt-4 rounded-2xl border border-slate-200 bg-white">
-            <div class="flex items-center justify-between px-4 py-3 md:px-6">
-                <div class="flex flex-col md:flex-row items-center gap-3">
-                    <img src="assets/logo.png" alt="Bangladesh Govt Logo" class="h-9 w-9 rounded-full" />
-                    <div class="leading-tight">
+            <div class="flex items-center justify-between px-4 py-3 md:px-6 flex-nowrap max-sm:px-2 max-sm:gap-1">
+                <div class="flex flex-col md:flex-row items-center gap-3 max-sm:gap-1">
+                    <img src="assets/logo.png" alt="Bangladesh Govt Logo"
+                        class="h-9 w-9 rounded-full max-sm:h-7 max-sm:w-7" />
+                    <div class="leading-tight max-sm:text-xs">
                         <p class="font-extrabold tracking-tight text-[#006747]">
                             Emergency <br />
                             Service
@@ -38,28 +39,28 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1.5">
-                        <span id="heartCount" class="font-bold text-pink-500">0</span>
+                <div class="flex items-center gap-4 max-sm:gap-1">
+                    <div class="flex items-center gap-1.5 max-sm:gap-1">
+                        <span id="heartCount" class="font-bold text-pink-500 max-sm:text-sm">0</span>
                         <button id="navHeartBtn" title="Give a heart"
-                            class="rounded-xl w-9 border-slate-200 px-2 py-1 hover:bg-slate-50 transition">
-                            <img src="assets/heart.png" alt="Heart" class="h-4 w-4" />
+                            class="rounded-xl w-9 border-slate-200 px-2 py-1 hover:bg-slate-50 transition max-sm:w-7 max-sm:px-1">
+                            <img src="assets/heart.png" alt="Heart" class="h-4 w-4 max-sm:h-3 max-sm:w-3" />
                         </button>
                     </div>
 
-                    <div class="flex items-center gap-1.5">
-                        <span id="coinCount" class="font-bold text-amber-500">100</span>
-                        <img src="assets/coin.png" alt="Coins" class="w-5 h-5" />
+                    <div class="flex items-center gap-1.5 max-sm:gap-1">
+                        <span id="coinCount" class="font-bold text-amber-500 max-sm:text-sm">100</span>
+                        <img src="assets/coin.png" alt="Coins" class="w-5 h-5 max-sm:w-4 max-sm:h-4" />
                     </div>
 
-                    <div class="flex items-center gap-1.5 bg-[#00A63E] text-white px-2 py-1 rounded-xl">
+                    <div
+                        class="flex items-center gap-1.5 bg-[#00A63E] text-white px-2 py-1 rounded-xl max-sm:px-1 max-sm:py-0.5 max-sm:text-sm">
                         <p>Copy</p>
                         <span id="copyCount" class="font-bold">0</span>
                     </div>
                 </div>
             </div>
         </nav>
-
     </header>
 
     <!-- Logo section -->
