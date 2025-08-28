@@ -13,6 +13,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Hind+Madurai:wght@300;400;500;600;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+    <script src="https://kit.fontawesome.com/85ea785855.js" crossorigin="anonymous"></script>
+
     <style>
         html,
         body {
@@ -26,8 +28,8 @@
 </head>
 
 <body>
+    <!-- Nav section -->
     <header class="sticky top-0 z-50 px-8">
-        <!-- Nav section -->
         <nav class="nav-shadow mx-auto mt-4 rounded-2xl border border-slate-200 bg-white">
             <div class="flex items-center justify-between px-4 py-3 md:px-6">
                 <div class="flex items-center gap-3">
@@ -83,7 +85,6 @@
     <!-- Main section -->
     <main class="mx-auto mt-6 sm:mt-8 px-4 sm:px-6 pb-[3.5rem]">
         <div>
-
             <section>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     <div
@@ -429,11 +430,149 @@
                 </div>
             </section>
         </div>
+
     </main>
 
-    <footer>
+    <script>
+        const state = {
+            hearts: 0,
+            coins: 100,
+            copies: 0,
+        };
 
-    </footer>
+        const heartCountEl = document.getElementById("heartCount");
+        const coinCountEl = document.getElementById("coinCount");
+        const copyCountEl = document.getElementById("copyCount");
+        const navHeartBtn = document.getElementById("navHeartBtn");
+
+        function renderCounts() {
+            heartCountEl.textContent = state.hearts;
+            coinCountEl.textContent = state.coins;
+            copyCountEl.textContent = state.copies;
+        }
+
+        async function copyToClipboard(text) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                    return true;
+                } else {
+                    // Fallback
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    textArea.style.position = "fixed";
+                    textArea.style.left = "-999999px";
+                    textArea.style.top = "-999999px";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    return new Promise((resolve, reject) => {
+                        document.execCommand('copy') ? resolve(true) : reject(false);
+                        textArea.remove();
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                return false;
+            }
+        }
+
+        // event handlers
+        function handleHeartClick() {
+            state.hearts += 1;
+            renderCounts();
+            alert('Thank you for your support! ❤️');
+        }
+
+        async function handleCopy(number, serviceName) {
+            try {
+                const ok = await copyToClipboard(number);
+                if (ok) {
+                    state.copies += 1;
+                    renderCounts();
+                    alert(`Copied ${serviceName} number: ${number}`);
+                } else {
+                    alert(`Unable to copy. Number: ${number}`, false);
+                }
+            } catch (error) {
+                console.error('Copy failed:', error);
+                alert('Failed to copy number', false);
+            }
+        }
+
+        function handleCall(service) {
+            if (state.coins < 20) {
+                alert("⚠ Not enough coins (need 20). Please try later.", false);
+                return;
+            }
+
+            state.coins -= 20;
+            renderCounts();
+
+            alert(`Calling ${service.nameEn} (${service.headTitle}) — ${service.number}`);
+
+            state.history.push({
+                headTitle: service.headTitle,
+                nameEn: service.nameEn,
+                number: service.number,
+                time: formatLocalDateTime(),
+            });
+        }
+
+        function setupEventListeners() {
+            // on click
+            document.addEventListener('click', function (e) {
+                // heart
+                if (e.target.closest('.heartBtn')) {
+                    handleHeartClick();
+                    const heartIcon = e.target.closest('.heartBtn').querySelector('i');
+                    if (heartIcon) {
+                        heartIcon.classList.remove('fa-regular');
+                        heartIcon.classList.add('fa-solid', 'text-pink-500');
+                    }
+                }
+                
+                // copy
+                if (e.target.closest('.copyBtn')) {
+                    const card = e.target.closest('.relative');
+                    if (card) {
+                        const numberEl = card.querySelector('.font-mono');
+                        const nameEl = card.querySelector('.text-slate-500');
+                        if (numberEl && nameEl) {
+                            const number = numberEl.textContent;
+                            const name = nameEl.textContent;
+                            handleCopy(number, name);
+                        }
+                    }
+                }
+
+                // Call buttons
+                if (e.target.closest('.callBtn')) {
+                    const card = e.target.closest('.relative');
+                    if (card) {
+                        const headTitleEl = card.querySelector('.font-semibold');
+                        const nameEl = card.querySelector('.text-slate-500');
+                        const numberEl = card.querySelector('.font-mono');
+
+                        if (headTitleEl && nameEl && numberEl) {
+                            const service = {
+                                headTitle: headTitleEl.textContent,
+                                nameEn: nameEl.textContent,
+                                number: numberEl.textContent,
+                            };
+                            handleCall(service);
+                        }
+                    }
+                }
+            });
+        }
+
+        // DOM
+        document.addEventListener('DOMContentLoaded', function () {
+            setupEventListeners();
+            renderCounts();
+        });
+    </script>
 </body>
 
 </html>
