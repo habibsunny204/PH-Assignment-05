@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emergency Hotlines</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Hind+Madurai:wght@300;400;500;600;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
@@ -461,6 +457,7 @@
             hearts: 0,
             coins: 100,
             copies: 0,
+            history: [],
 
         };
 
@@ -468,6 +465,9 @@
         const coinCountEl = document.getElementById("coinCount");
         const copyCountEl = document.getElementById("copyCount");
         const navHeartBtn = document.getElementById("navHeartBtn");
+        const historyListEl = document.getElementById("historyList");
+        const emptyHistoryEl = document.getElementById("emptyHistory");
+        const clearHistoryBtn = document.getElementById("clearHistory");
 
         function renderCounts() {
             heartCountEl.textContent = state.hearts;
@@ -541,6 +541,7 @@
                 number: service.number,
                 time: formatLocalDateTime(),
             });
+            renderHistory();
         }
 
         function setupEventListeners() {
@@ -591,10 +592,64 @@
             });
         }
 
+        // history render
+        function formatLocalDateTime() {
+            const now = new Date();
+            const optsDate = { year: "numeric", month: "short", day: "numeric" };
+            const optsTime = {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+            };
+            return `${now.toLocaleDateString(
+                undefined,
+                optsDate
+            )} ${now.toLocaleTimeString(undefined, optsTime)}`;
+        }
+
+        function renderHistory() {
+            historyListEl.innerHTML = "";
+            if (state.history.length === 0) {
+                emptyHistoryEl.classList.remove("hidden");
+                return;
+            }
+            emptyHistoryEl.classList.add("hidden");
+            state.history
+                .slice()
+                .reverse()
+                .forEach((item) => {
+                    const li = document.createElement("li");
+                    li.className = "px-4 py-3";
+                    li.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <p class="font-semibold">${item.headTitle} <span class="text-slate-500">(${item.nameEn})</span></p>
+              <p class="text-sm text-slate-600"> ${item.number}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-slate-500">Called at</p>
+              <p class="text-sm font-medium">${item.time}</p>
+            </div>
+          </div>
+        `;
+                    historyListEl.appendChild(li);
+                });
+        }
+
+        clearHistoryBtn.addEventListener("click", () => {
+            if (state.history.length === 0) return;
+            if (confirm("Clear all call history?")) {
+                state.history = [];
+                renderHistory();
+            }
+        });
+
+
         // DOM
         document.addEventListener('DOMContentLoaded', function () {
             setupEventListeners();
             renderCounts();
+            renderHistory()
         });
     </script>
 </body>
