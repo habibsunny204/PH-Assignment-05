@@ -84,8 +84,9 @@
 
     <!-- Main section -->
     <main class="mx-auto mt-6 sm:mt-8 px-4 sm:px-6 pb-[3.5rem]">
-        <div>
-            <section>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <section class="lg:col-span-2 space-y-4">
+                <!-- All the carts -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     <div
                         class="relative rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 hover:shadow transition shadow-md">
@@ -429,8 +430,30 @@
                     </div>
                 </div>
             </section>
-        </div>
 
+            <!-- call history section -->
+            <aside class="lg:col-span-1">
+                <div class="rounded-2xl border border-slate-200 bg-white text-slate-800">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200">
+                        <div class="flex items-center gap-2">
+                            <span><i class="fa-regular fa-clock"></i></span>
+                            <h3 class="font-semibold">Call History</h3>
+                        </div>
+
+                        <button id="clearHistory"
+                            class="text-sm font-semibold rounded-lg border border-transparent px-3 py-1.5 bg-green-600 text-white hover:bg-green-700">
+                            Clear
+                        </button>
+                    </div>
+                    <ul id="historyList" class="divide-y divide-slate-200 max-h-[520px] overflow-auto">
+                        <!-- History will be filled in the runtime -->
+                    </ul>
+                    <div id="emptyHistory" class="px-4 py-8 text-center text-slate-500 text-sm">
+                        No calls yet. Your history will appear here.
+                    </div>
+                </div>
+            </aside>
+        </div>
     </main>
 
     <script>
@@ -438,6 +461,7 @@
             hearts: 0,
             coins: 100,
             copies: 0,
+
         };
 
         const heartCountEl = document.getElementById("heartCount");
@@ -531,7 +555,7 @@
                         heartIcon.classList.add('fa-solid', 'text-pink-500');
                     }
                 }
-                
+
                 // copy
                 if (e.target.closest('.copyBtn')) {
                     const card = e.target.closest('.relative');
